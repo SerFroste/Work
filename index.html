@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<!--
+  역삼동 점검 — 폰용 바깥 페이지 (2026-11-24)
+  - 웹앱(/exec)을 이 페이지 안의 틀(iframe)에 띄움 → 맨 위 "Google Apps Script 사용자가 만들었습니다" 회색 띠가 안 보임
+  - 주소 쓰는 법: https://(이 페이지 주소)/?k=본인키   ← 지금 /exec?k= 뒤에 붙이던 키를 그대로
+  - 키는 이 파일에 적지 않음 (사람마다 자기 링크의 키로 구분하는 건 웹앱과 똑같음)
+  - 웹앱 Code.gs v5.1 (틀 안에 넣는 것 허용) 을 새 버전으로 배포한 뒤에 동작함
+-->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="역삼동 점검">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex">
+<title>역삼동 점검</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #ffffff; }
+  #app { position: fixed; top: 0; left: 0; width: 100%; height: 100%; height: 100dvh; border: 0; display: block; }
+  #msg { display: none; padding: 24px; font: 17px/1.6 -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; color: #111827; }
+</style>
+</head>
+<body>
+<iframe id="app" title="역삼동 점검" allow="clipboard-write"></iframe>
+<div id="msg">주소 끝에 본인 키가 없어요.<br>받은 링크(…/?k=키)로 다시 열어주세요.</div>
+<script>
+  // 웹앱 배포 주소 (스마트폰 편의성 웹앱 /exec). 배포를 "새 버전"으로 바꿔도 이 주소는 그대로
+  var EXEC = 'https://script.google.com/macros/s/AKfycbwjPx44uU-6BuhVuNfHBXnQRA2SEkz-ePhrXpbUORJK-MNlKiF8UC6MKGrLXP-Q4v6G/exec';
+  var key = '';
+  try { key = new URLSearchParams(location.search).get('k') || ''; } catch (e) {}
+  if (!key && location.hash.length > 1) key = decodeURIComponent(location.hash.slice(1).replace(/^k=/, ''));
+  if (key) {
+    document.getElementById('app').src = EXEC + '?k=' + encodeURIComponent(key);
+  } else {
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('msg').style.display = 'block';
+  }
+</script>
+</body>
+</html>
